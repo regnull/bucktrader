@@ -25,6 +25,6 @@ mkdocs serve
 - Main docs sources:
   - `docs/getting-started.md`
   - `docs/quickstart.md`
-  - `docs/01-overview.md`
+  - `docs/specs/01-overview.md`
   - `docs/examples.md`
   - `docs/api/`

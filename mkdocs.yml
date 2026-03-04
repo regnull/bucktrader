@@ -31,18 +31,18 @@ nav:
   - Getting Started: getting-started.md
   - Quick Start: quickstart.md
   - Guides:
-      - Overview: 01-overview.md
-      - Lines System: 02-lines-system.md
-      - Component Model: 03-component-model.md
-      - Cortex Engine: 04-cortex.md
-      - Data Feeds: 05-data-feeds.md
-      - Strategies: 06-strategies.md
-      - Indicators: 07-indicators.md
-      - Broker: 08-broker.md
-      - Analyzers & Observers: 09-analyzers-observers.md
-      - Live Trading: 10-live-trading.md
-      - Plotting: 11-plotting.md
-      - Error Handling: 12-error-handling.md
+      - Overview: specs/01-overview.md
+      - Lines System: specs/02-lines-system.md
+      - Component Model: specs/03-component-model.md
+      - Cortex Engine: specs/04-cortex.md
+      - Data Feeds: specs/05-data-feeds.md
+      - Strategies: specs/06-strategies.md
+      - Indicators: specs/07-indicators.md
+      - Broker: specs/08-broker.md
+      - Analyzers & Observers: specs/09-analyzers-observers.md
+      - Live Trading: specs/10-live-trading.md
+      - Plotting: specs/11-plotting.md
+      - Error Handling: specs/12-error-handling.md
       - Optimization: optimization.md
       - Example Strategies: examples.md
   - API Reference:
