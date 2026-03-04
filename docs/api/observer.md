@@ -1,0 +1,3 @@
+# `bucktrader.observer`
+
+::: bucktrader.observer

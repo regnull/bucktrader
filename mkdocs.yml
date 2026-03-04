@@ -1,0 +1,58 @@
+site_name: Bucktrader
+site_description: Event-driven algorithmic trading framework for backtesting and live trading
+repo_name: bucktrader
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            show_root_heading: true
+            show_signature_annotations: true
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Quick Start: quickstart.md
+  - Guides:
+      - Overview: 01-overview.md
+      - Lines System: 02-lines-system.md
+      - Component Model: 03-component-model.md
+      - Cortex Engine: 04-cortex.md
+      - Data Feeds: 05-data-feeds.md
+      - Strategies: 06-strategies.md
+      - Indicators: 07-indicators.md
+      - Broker: 08-broker.md
+      - Analyzers & Observers: 09-analyzers-observers.md
+      - Live Trading: 10-live-trading.md
+      - Plotting: 11-plotting.md
+      - Error Handling: 12-error-handling.md
+      - Optimization: optimization.md
+      - Example Strategies: examples.md
+  - API Reference:
+      - API Overview: api/index.md
+      - bucktrader.cortex: api/cortex.md
+      - bucktrader.strategy: api/strategy.md
+      - bucktrader.broker: api/broker.md
+      - bucktrader.feed: api/feed.md
+      - bucktrader.indicator: api/indicator.md
+      - bucktrader.analyzer: api/analyzer.md
+      - bucktrader.observer: api/observer.md
+      - bucktrader.order: api/order.md
+      - bucktrader.trade: api/trade.md

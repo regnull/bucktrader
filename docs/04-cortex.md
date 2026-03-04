@@ -295,35 +295,53 @@ When `maxcpus` != 1:
 - `optdatas=true`: Data is preloaded once in the main process and passed to workers (avoids re-reading files)
 - `optreturn=true`: Only params + analyzer results are returned (not full strategy objects with all data)
 
+### 7.4 Serialization for Workers
+
+Each worker receives a serialized task containing:
+
+| Component | Serialization Approach |
+|-----------|----------------------|
+| Strategy class | Class reference (module path + class name) |
+| Parameters | Dictionary of `{param_name: value}` for this combination |
+| Data feeds | Serialized line arrays if `optdatas=true`; otherwise, data source references (file paths, API config) for the worker to load independently |
+| Broker config | Commission schemes, slippage settings, initial cash |
+| Analyzers/Observers | Class references + parameter dictionaries |
+
+Workers reconstruct the full Cortex environment from these components and run an independent backtest.
+
+### 7.5 Data Sharing (`optdatas=true`)
+
+When `optdatas=true`:
+
+1. The main process preloads all data feeds into memory
+2. Preloaded line arrays are serialized once and included in each worker's task
+3. Workers reconstruct data feeds from the serialized arrays (no file I/O)
+4. This avoids redundant file reads across all optimization runs
+
+When `optdatas=false` (or data cannot be preloaded):
+
+1. Each worker receives data source references (file paths, connection config)
+2. Workers independently load data from source
+3. Slower but uses less memory for serialization
+
+### 7.6 OptReturn (Lightweight Results)
+
+When `optreturn=true`, workers return an `OptReturn` object instead of the full strategy:
+
+```
+OptReturn:
+    params: {}              // Strategy parameter values for this run
+    analyzers: {}           // Map of analyzer name → analyzer results (get_analysis())
+```
+
+This avoids serializing the full strategy object graph (all line data, indicator state, order history) back to the main process. Only the parameter combination and computed metrics are returned.
+
+When `optreturn=false`, the full strategy object is returned, including all line data and state. This uses significantly more memory but allows post-hoc inspection of trades, indicator values, and plotting.
+
 ## 8. Plotting
 
-```
-cortex.plot(plotter=null, numfigs=1, iplot=true, start=null,
-            end=null, width=16, height=9, dpi=300, tight=true,
-            use=null, **kwargs)
-```
-
-Cortex delegates to a `Plot` class that:
-
-1. Creates a figure with subplots
-2. For each data feed: plots OHLC/candlestick chart with volume overlay
-3. For each indicator: plots in same subplot or separate based on `plotinfo`
-4. For each observer: plots in separate subplot below data
-5. Applies color scheme from `PlotScheme`
-
-### 8.1 Plot Scheme
-
-Controls visual appearance:
-- Chart style: `"line"`, `"bar"`, `"candle"`
-- Colors: Tableau-based color palette
-- Layout: Major/minor chart proportions (`rowsmajor`, `rowsminor`)
-- Volume: Overlay vs separate, scaling, colors
-- Legends: Position, transparency
-- Formatting: Date format, grid, tick rotation
+See [11-plotting.md](11-plotting.md) for the full plotting specification, including `cortex.plot()` parameters, chart layout, `PlotScheme`, and per-component plot configuration (`plotinfo`, `plotlines`).
 
 ## 9. Writer Integration
 
-When writers are configured:
-1. Before run: headers are collected from all strategies/indicators/observers
-2. During run: values are collected each bar
-3. Output goes to file or stdout in CSV-like format
+See [09-analyzers-observers.md, Section 3](09-analyzers-observers.md) for the full writer specification, including the writer interface, `WriterFile` parameters, and output structure.

@@ -1,0 +1,3 @@
+# `bucktrader.strategy`
+
+::: bucktrader.strategy

@@ -1,0 +1,3 @@
+# `bucktrader.indicator`
+
+::: bucktrader.indicator

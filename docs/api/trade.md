@@ -1,0 +1,3 @@
+# `bucktrader.trade`
+
+::: bucktrader.trade

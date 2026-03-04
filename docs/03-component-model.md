@@ -157,35 +157,9 @@ When a class defines `lines = ("sma", "signal")`, the LineSeries infrastructure:
 
 ### 5.2 Processing Plot Info
 
-Two special class attributes control plotting:
+Two special class attributes — `plotinfo` and `plotlines` — control plotting appearance. These are processed into configuration subtypes that inherit from parent classes.
 
-```
-plotinfo = {
-    plot: true,              // Whether to plot
-    subplot: true,           // In separate subplot or overlaid
-    plotname: "",            // Display name
-    plotskip: false,         // Skip entirely
-    plotabove: false,        // Plot above data
-    plotlinelabels: false,
-    plotlinevalues: true,
-    plotvaluetags: true,
-    plotymargin: 0.0,
-    plotyhlines: [],         // Horizontal lines (y values)
-    plotyticks: [],          // Y-axis tick marks
-    plothlines: [],          // Horizontal reference lines
-    plotforce: false,
-    plotmaster: null,        // Master data for overlaying
-}
-```
-
-```
-plotlines = {
-    sma: {color: "blue", linewidth: 2.0},
-    signal: {_plotskip: true},    // underscore prefix = special directive
-}
-```
-
-These are processed into configuration subtypes that inherit from parent classes.
+See [11-plotting.md](11-plotting.md) for the full specification of plot configuration, including all `plotinfo` defaults, `plotlines` directives, and `PlotScheme` settings.
 
 ### 5.3 Class Aliases
 
@@ -218,11 +192,42 @@ During `donew`, the component infrastructure:
 3. Calculates initial `_minperiod` as the max of all data feed minperiods
 4. Propagates minperiod to all owned lines
 
-### 6.3 Registration (dopostinit)
+### 6.3 Child Management
+
+LineIterator maintains a collection of child iterators by type:
+
+```
+_lineiterators = {
+    IndType: [],   // child indicators
+    ObsType: [],   // child observers
+    StratType: [], // child strategies (unused)
+}
+```
+
+Children auto-register via `addindicator()` called from the component infrastructure during post-init.
+
+### 6.4 Period Recalculation
+
+After all children are registered, `_periodrecalc()` updates the minimum period to be the maximum of all child indicator minimum periods. This ensures the parent waits for all dependencies.
+
+### 6.5 Registration (dopostinit)
 
 1. Recalculates `_minperiod` from all lines and child indicators
 2. Calls `_periodrecalc()` to propagate periods
 3. Registers self with owner via `owner.addindicator(self)`
+
+### 6.6 Iteration Methods
+
+**Event-driven (`_next`)**:
+1. Call `_next()` on all child indicators
+2. Call `_next()` on all child observers
+3. Based on current bar vs. minperiod, call `prenext()`, `nextstart()`, or `next()`
+
+**Vectorized (`_once`)**:
+1. Forward all lines to the total data length
+2. Call `_once()` on all child indicators
+3. Home all line pointers
+4. For each bar: advance pointers, call appropriate strategy method
 
 ## 7. Indicator Infrastructure
 

@@ -1,0 +1,3 @@
+# `bucktrader.cortex`
+
+::: bucktrader.cortex

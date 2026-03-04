@@ -217,51 +217,9 @@ The component infrastructure that processes class definitions:
 
 ## 8. LineIterator
 
-Adds iteration capability and child management on top of LineSeries.
+LineIterator adds iteration capability and child management on top of LineSeries. It is the bridge between the lines data model and the component lifecycle.
 
-### 8.1 Data Discovery
-
-During object creation, the component infrastructure:
-
-1. Scans constructor arguments for LineRoot instances (data feeds)
-2. Wraps raw Lines in `LineSeriesMaker` if needed
-3. Creates convenience attributes:
-   - `data` → first data feed
-   - `data0`, `data1`, ... → indexed data feeds
-   - `data_close`, `data_open`, ... → line shortcuts
-   - `data0_close`, `data1_high`, ... → indexed line shortcuts
-   - `dnames` → map of data names to data objects
-
-### 8.2 Child Management
-
-LineIterator maintains a collection of child iterators by type:
-
-```
-_lineiterators = {
-    IndType: [],   // child indicators
-    ObsType: [],   // child observers
-    StratType: [], // child strategies (unused)
-}
-```
-
-Children auto-register via `addindicator()` called from the component infrastructure during post-init.
-
-### 8.3 Period Recalculation
-
-After all children are registered, `_periodrecalc()` updates the minimum period to be the maximum of all child indicator minimum periods. This ensures the parent waits for all dependencies.
-
-### 8.4 Iteration Methods
-
-**Event-driven (`_next`)**:
-1. Call `_next()` on all child indicators
-2. Call `_next()` on all child observers
-3. Based on current bar vs. minperiod, call `prenext()`, `nextstart()`, or `next()`
-
-**Vectorized (`_once`)**:
-1. Forward all lines to the total data length
-2. Call `_once()` on all child indicators
-3. Home all line pointers
-4. For each bar: advance pointers, call appropriate strategy method
+For the full LineIterator specification — including data discovery, child management, period recalculation, and iteration methods — see [03-component-model.md, Section 6](03-component-model.md).
 
 ## 9. Line Operations
 

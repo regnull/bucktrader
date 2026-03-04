@@ -318,42 +318,4 @@ This allows mixing daily indicators in an intraday strategy seamlessly.
 
 ## 9. Plot Configuration
 
-### 9.1 plotinfo
-
-Controls how the indicator appears on charts:
-
-```
-plotinfo = {
-    plot: true,              // Show on chart
-    subplot: true,           // Separate subplot (false = overlay on data)
-    plotname: "My Indicator", // Display name
-    plotskip: false,         // Hide entirely
-    plotabove: false,        // Position above data chart
-    plothlines: [30, 70],    // Horizontal reference lines
-    plotyticks: [],          // Y-axis tick marks
-    plotymargin: 0.15,       // Y-axis margin
-    plotmaster: null,        // Overlay on another component's subplot
-}
-```
-
-### 9.2 plotlines
-
-Controls per-line appearance:
-
-```
-plotlines = {
-    sma: {
-        color: "blue",
-        linewidth: 1.5,
-        linestyle: "--",      // Dashed
-        _plotskip: false,
-    },
-    signal: {
-        _plotskip: true,      // Hide this line
-    },
-    _fill_gt: ("sma", "signal", "green"),  // Fill when sma > signal
-    _fill_lt: ("sma", "signal", "red"),    // Fill when sma < signal
-}
-```
-
-Underscore-prefixed keys are directives, not line names.
+Indicators control their chart appearance via `plotinfo` and `plotlines` class attributes. See [11-plotting.md](11-plotting.md) for the full plotting specification, including all `plotinfo` defaults, `plotlines` directives, and chart layout details.

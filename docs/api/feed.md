@@ -1,0 +1,3 @@
+# `bucktrader.feed`
+
+::: bucktrader.feed

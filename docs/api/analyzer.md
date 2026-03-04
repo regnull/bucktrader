@@ -1,0 +1,3 @@
+# `bucktrader.analyzer`
+
+::: bucktrader.analyzer

@@ -68,26 +68,34 @@ Cortex (Engine/Orchestrator)
 
 ### 3.2 Class Hierarchy
 
-```
-MetaBase (component infrastructure)
-└── MetaParams (parameter inheritance)
-    └── MetaLineSeries (line declaration and descriptor setup)
-        └── MetaLineIterator (data discovery, auto-registration)
-            ├── LineIterator
-            │   ├── DataAccessor
-            │   │   ├── IndicatorBase → Indicator
-            │   │   ├── ObserverBase → Observer
-            │   │   └── StrategyBase → Strategy
-            │   └── AbstractDataBase (data feeds)
-            └── MetaStrategy (strategy-specific setup)
+The component system uses an **infrastructure layer** (metaclasses or builders, prefixed with "Meta" below) that processes class definitions at creation time, and a **user-facing layer** of classes that users subclass directly.
 
-MetaParams (standalone usage)
+**Infrastructure layer** (processes declarations, sets up lifecycle hooks — not used directly by users):
+```
+Base (foundation: lifecycle hooks, owner discovery)
+└── Params (parameter inheritance)
+    └── LineSeries (line declaration and descriptor setup)
+        └── LineIterator (data discovery, auto-registration)
+```
+
+**User-facing class hierarchy** (classes users interact with):
+```
+LineIterator
+├── DataAccessor
+│   ├── IndicatorBase → Indicator
+│   ├── ObserverBase → Observer
+│   └── StrategyBase → Strategy
+└── AbstractDataBase (data feeds)
+
+Params (standalone usage — no lines)
 ├── BrokerBase → BackBroker
 ├── CommInfoBase
 ├── SizerBase
 ├── Store (singleton)
 └── Cortex
 ```
+
+See [03-component-model.md](03-component-model.md) for the full specification of the component infrastructure, including lifecycle hooks, parameter system, and auto-registration.
 
 ### 3.3 Data Flow
 
@@ -172,6 +180,8 @@ Two execution paths depending on configuration:
 | Broker System | Order execution and portfolio | [08-broker.md](08-broker.md) |
 | Analyzers & Observers | Metrics and monitoring | [09-analyzers-observers.md](09-analyzers-observers.md) |
 | Live Trading | Real-time broker integration | [10-live-trading.md](10-live-trading.md) |
+| Plotting | Chart rendering and configuration | [11-plotting.md](11-plotting.md) |
+| Error Handling | Errors, logging, and recovery | [12-error-handling.md](12-error-handling.md) |
 
 ## 6. Memory Management Modes
 

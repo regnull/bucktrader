@@ -299,16 +299,7 @@ Parameters control signal behavior:
 
 ## 10. Memory Management
 
-```
-cortex = Cortex(exactbars=level)
-```
-
-| Level | Description |
-|-------|-------------|
-| `0` / `false` | All data in memory. Full plotting. Fastest (with runonce). |
-| `1` | Sub-indicators and operations use bounded buffers. Main indicators keep full data. Runonce disabled. |
-| `-1` | All lines use minimum-sized buffers. No plotting. |
-| `-2` | Absolute minimum buffers. No plotting. |
+See [01-overview.md, Section 6](01-overview.md) for the full specification of memory management modes (`cortex.params.exactbars`).
 
 ## 11. Writer Output
 
